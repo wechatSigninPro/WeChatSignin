@@ -1,0 +1,37 @@
+<!--pages/sign/list/list.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="course">
+      <view class="courses-major">
+        <text class="courses-name">{{name}}</text>
+        <text class="courses-odd">{{student_num}}人</text>
+      </view>
+      <view class="courses-minor">
+        <text class="course-minor-left">{{code}}</text>
+        <text class="course-minor-right">{{teacher_name}}</text>
+      </view>
+      <view class="courses-minor">
+        <text class="course-minor-left">点名时间</text>
+        <text class="course-minor-right">{{create_time}}</text>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{students.length >0}}">
+    <view class="students">
+      <block wx:for="{{students}}" wx:key="user.id">
+        <view class="student">
+          <text class="student-index">{{index+1}}</text>
+          <text class="student-name">{{item.user.name}}</text>
+          <text class="student-id">{{item.user.campus_id}}</text>
+          <text class="student-state">{{item.id? '已签到':'未签到'}}</text>
+        </view>
+      </block>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="notice">
+      <text class="notice-text">暂无选课学生</text>
+    </view>
+  </block>
+</view>
+

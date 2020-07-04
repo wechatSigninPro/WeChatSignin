@@ -1,0 +1,25 @@
+<!--pages/sign/export/export.wxml-->
+<view class="container">
+  <block wx:if="{{!user.ck.role}}">
+    <view class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="content">
+      <form class="content-form">
+        <view class="input-item">
+          <text class="input-label">课程</text>
+          <input class="input-val" placeholder="请选择课程"></input>
+        </view>
+        <view class="input-item">
+          <text class="input-label">格式</text>
+          <input class="input-val" placeholder="PDF / Excel"></input>
+        </view>
+      </form>
+    </view>
+    <view class="confirm-btn">
+      <text>保存</text>
+    </view>
+  </block>
+</view>

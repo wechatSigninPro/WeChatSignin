@@ -1,0 +1,64 @@
+/* pages/index/apply/apply.wxss */
+.container {
+  background-color: #f6f6f6;
+}
+
+.content {
+  padding: 110rpx 0 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.courses {
+  display: flex;
+  flex-direction: column;
+}
+
+.courses-item {
+  margin: 0 30rpx 30rpx;
+  padding: 20rpx 20rpx;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5rpx;
+}
+
+.courses-major {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.courses-name {
+  font-size: 32rpx;
+}
+
+.courses-odd {
+  font-size: 28rpx;
+  color: #7e7e7e;
+}
+
+.courses-minor {
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 24rpx;
+  color: #7e7e7e;
+}
+
+ .notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  border: 1px solid #e5e5e5;
+  border-radius: 5rpx;
+  margin: 0rpx 5%;
+  background-color: #fff;
+}
+.notice-text {
+  margin: 20rpx 30rpx 20rpx;
+  font-size: 32rpx;
+  color: #7e7e7e;
+}

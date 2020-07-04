@@ -1,0 +1,70 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/search/search",
+    "pages/index/add/add",
+    "pages/index/import/import",
+    "pages/index/details/details",
+    "pages/index/students/students",
+    "pages/index/chat/chat",
+    "pages/index/update/update",
+    "pages/index/apply/apply",
+    "pages/index/applydetails/applydetails",
+    "pages/sign/qrcode/qrcode",
+    "pages/sign/sign",
+    "pages/sign/call/call",
+    "pages/sign/search/search",
+    "pages/sign/export/export",
+    "pages/sign/record/record",
+    "pages/sign/list/list",
+    "pages/sign/details/details",
+    "pages/me/me",
+    "pages/me/settings/settings",
+    "pages/me/info/info",
+    "pages/me/bind/bind",
+    "pages/me/about/about",
+    "pages/me/feedback/feedback"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于设备定位和蓝牙操作"
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1296db",
+    "navigationBarTitleText": "记得签到哦",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#7f848a",
+    "selectedColor": "#7f848a",
+    "backgroundColor": "#f7f6fb",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icon/home.png",
+        "selectedIconPath": "images/icon/home@active.png"
+      },
+      {
+        "pagePath": "pages/sign/sign",
+        "text": "签到",
+        "iconPath": "images/icon/attendance.png",
+        "selectedIconPath": "images/icon/attendance@active.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "设置",
+        "iconPath": "images/icon/me.png",
+        "selectedIconPath": "images/icon/me@active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 20000,
+    "uploadFile": 30000,
+    "downloadFile": 30000
+  },
+  "sitemapLocation": "sitemap.json"
+}

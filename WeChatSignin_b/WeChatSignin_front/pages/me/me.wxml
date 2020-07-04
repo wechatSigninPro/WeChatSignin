@@ -1,0 +1,68 @@
+<!--pages/me/me.wxml-->
+<view class="container">
+
+  <view class="user-info">
+    <view class="user-info-hd">
+      <button wx:if="{{!authorize_wx_user_info}}" open-type="getUserInfo" bindgetuserinfo="getWxUser" class="user-info-authorize">获取头像昵称</button>
+      <block wx:else>
+        <image class="user-avatar" src="{{user.wx.avatarUrl}}" />
+        <view class="user-title">
+          <text wx:if="{{user.ck.name}}" class="user-name">{{user.ck.name}}</text>
+          <text wx:else class="user-name">{{user.wx.nickName}}</text>
+          <text wx:if="{{user.ck.campus_id && user.ck.role == 'TEACHER'}}" class="user-id">工号：{{user.ck.campus_id}}</text>
+          <text wx:if="{{user.ck.campus_id && user.ck.role == 'STUDENT'}}" class="user-id">学号：{{user.ck.campus_id}}</text>
+        </view>
+        <text wx:if="{{user.ck.role == 'TEACHER'}}" class="user-role">老师</text>
+        <text wx:if="{{user.ck.role == 'STUDENT'}}" class="user-role">学生</text>
+      </block>
+    </view>
+
+    <view wx:if="{{user.ck.school || user.ck.department || user.ck.phone_num || user.ck.email || (user.ck.role == 'STUDENT' && (user.ck.student.major || user.ck.student.grade || user.ck.student.clazz))}}" class="user-info-bd">
+      <view wx:if="{{user.ck.school}}" class="user-info-item">
+        <text class="info-item-left">学校</text>
+        <text class="info-item-right">{{user.ck.school}}</text>
+      </view>
+      <view wx:if="{{user.ck.department}}" class="user-info-item">
+        <text class="info-item-left">学院</text>
+        <text class="info-item-right">{{user.ck.department}}</text>
+      </view>
+      <view wx:if="{{user.ck.phone_num}}" class="user-info-item">
+        <text class="info-item-left">手机号</text>
+        <text class="info-item-right">{{user.ck.phone_num}}</text>
+      </view>
+      <view wx:if="{{user.ck.email}}" class="user-info-item">
+        <text class="info-item-left">邮箱</text>
+        <text class="info-item-right">{{user.ck.email}}</text>
+      </view>
+      <block wx:if="{{user.ck.role == 'STUDENT'}}">
+        <view wx:if="{{user.ck.student.major}}" class="user-info-item">
+          <text class="info-item-left">专业</text>
+          <text class="info-item-right">{{user.ck.student.major}}</text>
+        </view>
+        <view wx:if="{{user.ck.student.grade}}" class="user-info-item">
+          <text class="info-item-left">年级</text>
+          <text class="info-item-right">{{user.ck.student.grade}}</text>
+        </view>
+        <view wx:if="{{user.ck.student.clazz}}" class="user-info-item">
+          <text class="info-item-left">班级</text>
+          <text class="info-item-right">{{user.ck.student.clazz}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="operations">
+    <navigator class="oper-item" url="/pages/me/settings/settings" hover-class="navigator-hover">
+      <image class="oper-icon" src="/images/icon/setting.png"></image>
+      <text class="oper-text">设置</text>
+    </navigator>
+    <navigator class="oper-item" url="/pages/me/info/info" hover-class="navigator-hover">
+      <image class="oper-icon" src="/images/icon/info.png"></image>
+      <text class="oper-text">更多信息</text>
+    </navigator>
+    <navigator class="oper-item" url="/pages/me/feedback/feedback" hover-class="navigator-hover">
+      <image class="oper-icon" src="/images/icon/feedback.png"></image>
+      <text class="oper-text">反馈</text>
+    </navigator>
+  </view>
+</view>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.CourseMapper">
+
+    <resultMap id="course" type="Course">
+        <id property="id" column="course_id"/>
+        <result property="name" column="course_name"/>
+        <result property="code" column="course_code"/>
+        <result property="time" column="course_time"/>
+        <result property="place" column="course_place"/>
+        <result property="createTime" column="course_create_time"/>
+        <result property="updateTime" column="course_update_time"/>
+        <association property="teacher" resultMap="com.nenu.edu.server.mapper.TeacherMapper.teacher"/>
+    </resultMap>
+
+    <resultMap id="excelCourse" type="ExcelCourse">
+        <id property="id" column="excel_course_id"/>
+        <result property="name" column="excel_course_name"/>
+        <result property="code" column="excel_course_code"/>
+        <association property="students" resultMap="excelStudent"/>
+    </resultMap>
+
+    <resultMap id="excelStudent" type="ExcelStudent">
+        <id property="id" column="excel_student_id"/>
+        <result property="name" column="excel_student_name"/>
+        <result property="campusId" column="excel_student_campus_id"/>
+        <association property="calls" resultMap="excelCall"/>
+    </resultMap>
+
+    <resultMap id="excelCall" type="ExcelCall">
+        <id property="id" column="excel_call_id"/>
+        <result property="signId" column="excel_call_sign_id"/>
+        <result property="createTime" column="excel_call_create_time"/>
+    </resultMap>
+
+    <select id="getById" resultMap="course">
+        SELECT
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE course.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Course" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO course (
+        teacher_id
+        , name
+        , code
+        , time
+        , place
+        , create_time
+        ) VALUES (
+        #{teacher.id}
+        , #{name}
+        , #{code}
+        , #{time}
+        , #{place}
+        , sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM course
+        WHERE id = #{id}
+    </delete>
+
+    <select id="listByTeacherId" resultMap="course">
+        SELECT
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE course.teacher_id = #{teacherId}
+    </select>
+
+    <update id="update" parameterType="Course">
+        UPDATE course
+        SET
+        name          = #{name}
+        , code        = #{code}
+        , time        = #{time}
+        , place       = #{place}
+        , update_time = sysdate()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="search" resultMap="course">
+        SELECT
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword}
+        OR user.name LIKE #{keyword}
+    </select>
+
+    <select id="searchByTeacher" resultMap="course">
+        SELECT
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE course.teacher_id = #{teacherId}
+        AND (course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword}
+        OR user.name LIKE #{keyword})
+    </select>
+
+    <select id="searchByStudent" resultMap="course">
+        SELECT
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM student_course
+        LEFT JOIN course ON student_course.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE student_course.student_id = #{studentId}
+        AND (course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword}
+        OR user.name LIKE #{keyword})
+    </select>
+
+    <select id="searchAllByStudent" resultMap="com.nenu.edu.server.mapper.StudentCourseMapper.studentCourse">
+        SELECT
+        student_course.id          AS student_course_id,
+        student_course.create_time AS student_course_create_time,
+        student_course.update_time AS student_course_update_time,
+
+        course.id                  AS course_id,
+        course.name                AS course_name,
+        course.code                AS course_code,
+        course.time                AS course_time,
+        course.place               AS course_place,
+        course.create_time         AS course_create_time,
+        course.update_time         AS course_update_time,
+
+        teacher.id                 AS teacher_id,
+        user.name                  AS teacher_name,
+        teacher.create_time        AS teacher_create_time,
+        teacher.update_time        AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN student_course
+        ON course.id = student_course.course_id
+        AND student_course.student_id = #{studentId}
+        WHERE course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword}
+        OR user.name LIKE #{keyword}
+    </select>
+
+    <select id="getByIdAndStudent" resultMap="com.nenu.edu.server.mapper.StudentCourseMapper.studentCourse">
+        SELECT
+        student_course.id          AS student_course_id,
+        student_course.create_time AS student_course_create_time,
+        student_course.update_time AS student_course_update_time,
+
+        course.id                  AS course_id,
+        course.name                AS course_name,
+        course.code                AS course_code,
+        course.time                AS course_time,
+        course.place               AS course_place,
+        course.create_time         AS course_create_time,
+        course.update_time         AS course_update_time,
+
+        teacher.id                 AS teacher_id,
+        user.name                  AS teacher_name,
+        teacher.create_time        AS teacher_create_time,
+        teacher.update_time        AS teacher_update_time
+        FROM course
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN student_course
+        ON course.id = student_course.course_id
+        AND student_course.student_id = #{studentId}
+        WHERE course.id = #{id}
+    </select>
+
+    <select id="listExcelCourseByTeacher" resultMap="excelCourse">
+        SELECT
+        course.id          AS excel_course_id,
+        course.name        AS excel_course_name,
+        course.code        AS excel_course_code,
+
+        user.student_id    AS excel_student_id,
+        user.name          AS excel_student_name,
+        user.campus_id     AS excel_student_campus_id,
+
+        `call`.id          AS excel_call_id,
+        sign.id            AS excel_call_sign_id,
+        `call`.create_time AS excel_call_create_time
+        FROM course
+        INNER JOIN student_course ON course.id = student_course.course_id
+        LEFT JOIN user ON student_course.student_id = user.student_id
+        LEFT JOIN `call` ON course.id = `call`.course_id
+        LEFT JOIN sign ON `call`.id = sign.call_id AND student_course.student_id = sign.student_id
+        WHERE course.teacher_id = #{teacherId}
+        ORDER BY course.id ASC, user.student_id ASC, `call`.id ASC;
+    </select>
+
+</mapper>

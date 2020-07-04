@@ -1,0 +1,84 @@
+<!--pages/sign/details/details.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-course">
+      <block wx:if="{{user.ck.role == 'TEACHER'}}">
+        <view class="course-hd">
+          <view class="courses-major">
+            <text class="courses-name">{{call.call.course.name}}</text>
+            <text class="courses-odd">{{call.call.course.code}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="courses-minor-left">{{call.call.course.place}}</text>
+            <text class="courses-minor-right">{{call.call.course.time}}</text>
+          </view>
+        </view>
+        <view class="course-bd">
+          <view class="course-item">
+            <text class="item-name">总人数</text>
+            <text class="item-value">{{call.student_sum}}人</text>
+          </view>
+          <view class="course-item">
+            <text class="item-name">签到人数</text>
+            <text class="item-value">{{call.sign_sum}}人</text>
+          </view>
+          <view class="course-item">
+            <text class="item-name">未签到人数</text>
+            <text class="item-value">{{call.student_sum - call.sign_sum}}人</text>
+          </view>
+          <view class="course-item">
+            <text class="item-name">口令</text>
+            <text class="item-value">{{call.call.password}}</text>
+          </view>
+          <view class="course-item">
+            <text class="item-name">点名时间</text>
+            <text class="item-value">{{call.call.create_time}}</text>
+          </view>
+          <view class="course-item">
+            <text class="item-name">签到名单</text>
+            <navigator class="item-value" url="/pages/sign/list/list?id={{call.id}}&name={{call.call.course.name}}&code={{call.call.course.code}}&place={{call.call.course.place}}&time={{call.call.course.time}}&create_time={{call.call.create_time}}&student_num={{call.student_sum}}&teacher_name={{call.call.course.teacher.name}}"  hover-class="navigator-hover">
+              <text>点击查看</text>
+            </navigator>
+          </view>
+          <view class="course-item">
+            <text class="item-name">补签</text>
+            <navigator class="item-value" url="/pages/sign/qrcode/qrcode?id={{call.id}}&name={{call.call.course.name}}&code={{call.call.course.code}}&place={{call.call.course.place}}&time={{call.call.course.time}}&create_time={{call.call.create_time}}" hover-class="navigator-hover">
+              <text>二维码</text>
+            </navigator>
+          </view>
+        </view>
+      </block>
+      <block wx:elif="{{user.ck.role == 'STUDENT'}}">
+        <view class="course-hd">
+          <view class="courses-major">
+            <text class="courses-name">{{call.sign.call.course.name}}</text>
+            <text class="courses-odd">{{call.sign.id? '已签到':'未签到'}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="course-room">{{call.sign.call.course.code}}</text>
+            <text class="course-time">{{call.sign.call.course.teacher.name}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="course-room">{{call.sign.call.course.place}}</text>
+            <text class="course-time">{{call.sign.call.course.time}}</text>
+          </view>
+        </view>
+        <view class="course-bd">
+          <view class="course-item">
+            <text class="item-name">点名时间</text>
+            <text class="item-value">{{call.sign.call.create_time}}</text>
+          </view>
+          <view wx:if="{{call.sign.id}}" class="course-item">
+            <text class="item-name">签到时间</text>
+            <text class="item-value">{{call.sign.create_time}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+    <block wx:if="{{user.ck.role =='TEACHER'}}">
+    <view class="delete-btn" bindtap="deleteCall">
+      <text>删除</text>
+    </view>
+  </block>
+</view>

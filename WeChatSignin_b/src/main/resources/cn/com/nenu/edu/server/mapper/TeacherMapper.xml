@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.TeacherMapper">
+
+    <resultMap id="teacher" type="Teacher">
+        <id property="id" column="teacher_id"/>
+        <result property="name" column="teacher_name"/>
+        <result property="createTime" column="teacher_create_time"/>
+        <result property="updateTime" column="teacher_update_time"/>
+    </resultMap>
+
+    <select id="getById" resultMap="teacher">
+        SELECT
+        teacher.id          AS teacher_id,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM teacher
+        WHERE teacher.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Teacher" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO teacher (
+        create_time
+        ) VALUES (
+        sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM teacher
+        WHERE id = #{id}
+    </delete>
+</mapper>

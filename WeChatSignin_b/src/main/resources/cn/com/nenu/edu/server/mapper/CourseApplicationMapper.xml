@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.CourseApplicationMapper">
+
+    <resultMap id="courseApplication" type="CourseApplication">
+        <id property="id" column="course_application_id"/>
+        <result property="status" column="course_application_status"/>
+        <result property="createTime" column="course_application_create_time"/>
+        <result property="updateTime" column="course_application_update_time"/>
+        <association property="student" resultMap="com.nenu.edu.server.mapper.StudentMapper.student"/>
+        <association property="course" resultMap="com.nenu.edu.server.mapper.CourseMapper.course"/>
+    </resultMap>
+
+    <select id="getById" resultMap="courseApplication">
+        SELECT
+        course_application.id          AS course_application_id,
+        course_application.status      AS course_application_status,
+        course_application.create_time AS course_application_create_time,
+        course_application.update_time AS course_application_update_time,
+
+        course.id                      AS course_id,
+        course.name                    AS course_name,
+        course.code                    AS course_code,
+        course.time                    AS course_time,
+        course.place                   AS course_place,
+        course.create_time             AS course_create_time,
+        course.update_time             AS course_update_time,
+
+        student.id                     AS student_id,
+        student.major                  AS student_major,
+        student.grade                  AS student_grade,
+        student.clazz                  AS student_clazz,
+        student.create_time            AS student_create_time,
+        student.update_time            AS student_update_time,
+        user_student.name              AS student_name,
+
+        teacher.id                     AS teacher_id,
+        teacher.create_time            AS teacher_create_time,
+        teacher.update_time            AS teacher_update_time,
+        user_teacher.name              AS teacher_name
+        FROM course_application
+        LEFT JOIN course ON course_application.course_id = course.id
+        LEFT JOIN student ON course_application.student_id = student.id
+        LEFT JOIN user user_student ON student.id = user_student.student_id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user user_teacher ON teacher.id = user_teacher.teacher_id
+        WHERE course_application.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="CourseApplication" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO course_application (
+        student_id
+        , course_id
+        , status
+        , create_time
+        ) VALUES (
+        #{student.id}
+        , #{course.id}
+        , #{status}
+        , sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM course_application
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE course_application
+        SET
+        status        = #{status}
+        , update_time = sysdate()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getByStudentIdAndCourseIdAndStatus" resultMap="courseApplication">
+        SELECT
+        course_application.id          AS course_application_id,
+        course_application.status      AS course_application_status,
+        course_application.create_time AS course_application_create_time,
+        course_application.update_time AS course_application_update_time,
+
+        course.id                      AS course_id,
+        course.name                    AS course_name,
+        course.code                    AS course_code,
+        course.time                    AS course_time,
+        course.place                   AS course_place,
+        course.create_time             AS course_create_time,
+        course.update_time             AS course_update_time,
+
+        student.id                     AS student_id,
+        student.major                  AS student_major,
+        student.grade                  AS student_grade,
+        student.clazz                  AS student_clazz,
+        student.create_time            AS student_create_time,
+        student.update_time            AS student_update_time,
+        user_student.name              AS student_name,
+
+        teacher.id                     AS teacher_id,
+        teacher.create_time            AS teacher_create_time,
+        teacher.update_time            AS teacher_update_time,
+        user_teacher.name              AS teacher_name
+        FROM course_application
+        LEFT JOIN course ON course_application.course_id = course.id
+        LEFT JOIN student ON course_application.student_id = student.id
+        LEFT JOIN user user_student ON student.id = user_student.student_id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user user_teacher ON teacher.id = user_teacher.teacher_id
+        WHERE course_application.student_id = #{studentId}
+        AND course_application.course_id = #{courseId}
+        AND course_application.status = #{status}
+    </select>
+
+    <select id="getByTeacherId" resultMap="courseApplication">
+        SELECT
+        course_application.id          AS course_application_id,
+        course_application.status      AS course_application_status,
+        course_application.create_time AS course_application_create_time,
+        course_application.update_time AS course_application_update_time,
+
+        course.id                      AS course_id,
+        course.name                    AS course_name,
+        course.code                    AS course_code,
+        course.time                    AS course_time,
+        course.place                   AS course_place,
+        course.create_time             AS course_create_time,
+        course.update_time             AS course_update_time,
+
+        student.id                     AS student_id,
+        student.major                  AS student_major,
+        student.grade                  AS student_grade,
+        student.clazz                  AS student_clazz,
+        student.create_time            AS student_create_time,
+        student.update_time            AS student_update_time,
+        user_student.name              AS student_name,
+
+        teacher.id                     AS teacher_id,
+        teacher.create_time            AS teacher_create_time,
+        teacher.update_time            AS teacher_update_time,
+        user_teacher.name              AS teacher_name
+        FROM course_application
+        LEFT JOIN course ON course_application.course_id = course.id
+        LEFT JOIN student ON course_application.student_id = student.id
+        LEFT JOIN user user_student ON student.id = user_student.student_id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user user_teacher ON teacher.id = user_teacher.teacher_id
+        WHERE course.teacher_id = #{teacherId}
+    </select>
+
+    <select id="getByStudentId" resultMap="courseApplication">
+        SELECT
+        course_application.id          AS course_application_id,
+        course_application.status      AS course_application_status,
+        course_application.create_time AS course_application_create_time,
+        course_application.update_time AS course_application_update_time,
+
+        course.id                      AS course_id,
+        course.name                    AS course_name,
+        course.code                    AS course_code,
+        course.time                    AS course_time,
+        course.place                   AS course_place,
+        course.create_time             AS course_create_time,
+        course.update_time             AS course_update_time,
+
+        student.id                     AS student_id,
+        student.major                  AS student_major,
+        student.grade                  AS student_grade,
+        student.clazz                  AS student_clazz,
+        student.create_time            AS student_create_time,
+        student.update_time            AS student_update_time,
+        user_student.name              AS student_name,
+
+        teacher.id                     AS teacher_id,
+        teacher.create_time            AS teacher_create_time,
+        teacher.update_time            AS teacher_update_time,
+        user_teacher.name              AS teacher_name
+        FROM course_application
+        LEFT JOIN course ON course_application.course_id = course.id
+        LEFT JOIN student ON course_application.student_id = student.id
+        LEFT JOIN user user_student ON student.id = user_student.student_id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user user_teacher ON teacher.id = user_teacher.teacher_id
+        WHERE course_application.student_id = #{studentId}
+    </select>
+
+</mapper>

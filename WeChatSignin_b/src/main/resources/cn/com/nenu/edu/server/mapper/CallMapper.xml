@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.CallMapper">
+
+    <resultMap id="call" type="Call">
+        <id property="id" column="call_id"/>
+        <result property="password" column="call_password"/>
+        <result property="latitude" column="call_latitude"/>
+        <result property="longitude" column="call_longitude"/>
+        <result property="createTime" column="call_create_time"/>
+        <result property="updateTime" column="call_update_time"/>
+        <association property="course" resultMap="com.nenu.edu.server.mapper.CourseMapper.course"/>
+    </resultMap>
+
+    <resultMap id="callVo" type="CallVo">
+        <id property="id" column="call_id"/>
+        <result property="studentSum" column="call_vo_student_sum"/>
+        <result property="signSum" column="call_vo_sign_sum"/>
+        <association property="call" resultMap="com.nenu.edu.server.mapper.CallMapper.call"/>
+    </resultMap>
+
+    <resultMap id="signVo" type="SignVo">
+        <id property="id" column="call_id"/>
+        <association property="sign" resultMap="com.nenu.edu.server.mapper.SignMapper.sign"/>
+    </resultMap>
+
+    <resultMap id="signRecordVo" type="SignRecordVo">
+        <id property="id" column="sign_id"/>
+        <association property="user" resultMap="com.nenu.edu.server.mapper.UserMapper.user"/>
+        <association property="sign" resultMap="com.nenu.edu.server.mapper.SignMapper.sign"/>
+    </resultMap>
+
+    <select id="getById" resultMap="call">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.password     AS call_password,
+        `call`.latitude     AS call_latitude,
+        `call`.longitude    AS call_longitude,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE `call`.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Call" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `call` (
+        course_id
+        , password
+        , latitude
+        , longitude
+        , create_time
+        ) VALUES (
+        #{course.id}
+        , #{password}
+        , #{latitude}
+        , #{longitude}
+        , sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM `call`
+        WHERE id = #{id}
+    </delete>
+
+    <select id="listByPasswordAndStudentAndLocation" resultMap="call">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.password     AS call_password,
+        `call`.latitude     AS call_latitude,
+        `call`.longitude    AS call_longitude,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        INNER JOIN student_course ON course.id = student_course.course_id AND student_course.student_id = #{studentId}
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE `call`.password = #{password}
+        AND TIMESTAMPDIFF(MINUTE, `call`.create_time, sysdate()) &lt; 5
+        AND round(6378.138 * 2 *
+        asin(sqrt(pow(sin((`call`.latitude * pi() / 180 - #{latitude} * pi() / 180) / 2), 2) +
+        cos(`call`.latitude * pi() / 180) * cos(#{latitude} * pi() / 180) *
+        pow(sin((`call`.longitude * pi() / 180 - #{longitude} * pi() / 180) / 2), 2))) * 1000)
+        &gt; -1;
+    </select>
+
+    <select id="getByIdAndLocation" resultMap="call">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.password     AS call_password,
+        `call`.latitude     AS call_latitude,
+        `call`.longitude    AS call_longitude,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        WHERE `call`.id = #{id}
+        AND TIMESTAMPDIFF(MINUTE, `call`.create_time, sysdate()) &lt; 5
+        AND round(6378.138 * 2 *
+        asin(sqrt(pow(sin((`call`.latitude * pi() / 180 - #{latitude} * pi() / 180) / 2), 2) +
+        cos(`call`.latitude * pi() / 180) * cos(#{latitude} * pi() / 180) *
+        pow(sin((`call`.longitude * pi() / 180 - #{longitude} * pi() / 180) / 2), 2))) * 1000)
+        &gt; -1;
+    </select>
+
+    <select id="getCallVoByTeacherId" resultMap="callVo">
+        SELECT
+        `call`.id                AS call_id,
+        `call`.password          AS call_password,
+        `call`.create_time       AS call_create_time,
+        `call`.update_time       AS call_update_time,
+
+        course.id                AS course_id,
+        course.name              AS course_name,
+        course.code              AS course_code,
+        course.time              AS course_time,
+        course.place             AS course_place,
+        course.create_time       AS course_create_time,
+        course.update_time       AS course_update_time,
+
+        teacher.id               AS teacher_id,
+        #             user.name                AS teacher_name,
+        teacher.create_time      AS teacher_create_time,
+        teacher.update_time      AS teacher_update_time,
+
+        count(student_course.id) AS call_vo_student_sum,
+        count(sign.id)           AS call_vo_sign_sum
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN student_course ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE course.teacher_id = #{teacherId}
+        GROUP BY `call`.id;
+    </select>
+
+    <select id="getSignVoByStudentId" resultMap="signVo">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        #             user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time,
+
+        sign.id             AS sign_id,
+        sign.create_time    AS sign_create_time,
+        sign.update_time    AS sign_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        INNER JOIN (
+        SELECT *
+        FROM student_course
+        WHERE student_course.student_id = #{studentId}
+        ) student_course
+        ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id;
+    </select>
+
+    <select id="getCallVoByCallId" resultMap="callVo">
+        SELECT
+        `call`.id                AS call_id,
+        `call`.password          AS call_password,
+        `call`.create_time       AS call_create_time,
+        `call`.update_time       AS call_update_time,
+
+        course.id                AS course_id,
+        course.name              AS course_name,
+        course.code              AS course_code,
+        course.time              AS course_time,
+        course.place             AS course_place,
+        course.create_time       AS course_create_time,
+        course.update_time       AS course_update_time,
+
+        teacher.id               AS teacher_id,
+        #            user.name                AS teacher_name,
+        teacher.create_time      AS teacher_create_time,
+        teacher.update_time      AS teacher_update_time,
+
+        count(student_course.id) AS call_vo_student_sum,
+        count(sign.id)           AS call_vo_sign_sum
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN student_course ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE `call`.id = #{callId};
+    </select>
+
+    <select id="getSignVoByCallIdAndStudentId" resultMap="signVo">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        #            user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time,
+
+        sign.id             AS sign_id,
+        sign.create_time    AS sign_create_time,
+        sign.update_time    AS sign_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN (
+        SELECT *
+        FROM sign AS sign_temp
+        WHERE sign_temp.call_id = #{callId}
+
+        AND sign_temp.student_id = #{studentId}
+        ) AS sign
+        ON `call`.id = sign.call_id
+        WHERE `call`.id = #{callId}
+    </select>
+
+    <select id="searchCallVoByTeacherId" resultMap="callVo">
+        SELECT
+        `call`.id                AS call_id,
+        `call`.password          AS call_password,
+        `call`.create_time       AS call_create_time,
+        `call`.update_time       AS call_update_time,
+
+        course.id                AS course_id,
+        course.name              AS course_name,
+        course.code              AS course_code,
+        course.time              AS course_time,
+        course.place             AS course_place,
+        course.create_time       AS course_create_time,
+        course.update_time       AS course_update_time,
+
+        teacher.id               AS teacher_id,
+        #             user.name                AS teacher_name,
+        teacher.create_time      AS teacher_create_time,
+        teacher.update_time      AS teacher_update_time,
+
+        count(student_course.id) AS call_vo_student_sum,
+        count(sign.id)           AS call_vo_sign_sum
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        LEFT JOIN student_course ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE course.teacher_id = #{teacherId}
+        AND (course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword})
+        GROUP BY `call`.id
+    </select>
+
+    <select id="searchSignVoByStudentId" resultMap="signVo">
+        SELECT
+        `call`.id           AS call_id,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        course.id           AS course_id,
+        course.name         AS course_name,
+        course.code         AS course_code,
+        course.time         AS course_time,
+        course.place        AS course_place,
+        course.create_time  AS course_create_time,
+        course.update_time  AS course_update_time,
+
+        teacher.id          AS teacher_id,
+        #            user.name           AS teacher_name,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time,
+
+        sign.id             AS sign_id,
+        sign.create_time    AS sign_create_time,
+        sign.update_time    AS sign_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN teacher ON course.teacher_id = teacher.id
+        LEFT JOIN user ON teacher.id = user.teacher_id
+        INNER JOIN (
+        SELECT *
+        FROM student_course
+        WHERE student_course.student_id = #{studentId}
+        ) student_course
+        ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE course.name LIKE #{keyword}
+        OR course.code LIKE #{keyword}
+        OR course.TIME LIKE #{keyword}
+        OR course.place LIKE #{keyword}
+        OR user.name LIKE #{keyword}
+    </select>
+
+    <select id="getCallVoByCourseId" resultMap="callVo">
+        SELECT
+        `call`.id                AS call_id,
+        `call`.password          AS call_password,
+        `call`.create_time       AS call_create_time,
+        `call`.update_time       AS call_update_time,
+
+        count(student_course.id) AS call_vo_student_sum,
+        count(sign.id)           AS call_vo_sign_sum
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        LEFT JOIN student_course ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE course.id = #{courseId}
+        GROUP BY `call`.id;
+    </select>
+
+    <select id="getSignVoByStudentIdAndCourseId" resultMap="signVo">
+        SELECT
+        `call`.id          AS call_id,
+        `call`.create_time AS call_create_time,
+        `call`.update_time AS call_update_time,
+
+        sign.id            AS sign_id,
+        sign.create_time   AS sign_create_time,
+        sign.update_time   AS sign_update_time
+        FROM `call`
+        LEFT JOIN course ON `call`.course_id = course.id
+        INNER JOIN (
+        SELECT *
+        FROM student_course
+        WHERE student_course.student_id = #{studentId}
+        AND student_course.course_id = #{courseId}
+        ) student_course
+        ON `call`.course_id = student_course.course_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id;
+    </select>
+
+    <select id="getSignRecordVoByCallId" resultMap="signRecordVo">
+        SELECT
+        user.id          AS user_id,
+        user.name        AS user_name,
+        user.campus_id   AS user_campus_id,
+
+        sign.id          AS sign_id,
+        sign.create_time AS sign_create_time,
+        sign.update_time AS sign_update_time
+        FROM `call`
+        INNER JOIN student_course ON `call`.course_id = student_course.course_id
+        LEFT JOIN user ON student_course.student_id = user.student_id
+        LEFT JOIN sign ON student_course.student_id = sign.student_id AND `call`.id = sign.call_id
+        WHERE `call`.id = #{callId};
+    </select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.StudentMapper">
+    <resultMap id="student" type="Student">
+        <id property="id" column="student_id"/>
+        <result property="major" column="student_major"/>
+        <result property="grade" column="student_grade"/>
+        <result property="clazz" column="student_clazz"/>
+        <result property="createTime" column="student_create_time"/>
+        <result property="updateTime" column="student_update_time"/>
+        <result property="name" column="student_name"/>
+    </resultMap>
+
+    <select id="getById" resultType="Student">
+        SELECT
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM student
+        WHERE student.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Student" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO student (
+        major
+        , grade
+        , clazz
+        , create_time
+        ) VALUES (
+        #{major}
+        , #{grade}
+        , #{clazz}
+        , sysdate()
+        )
+    </insert>
+
+    <update id="update" parameterType="Student">
+        UPDATE student
+        SET
+        major         = #{major}
+        , grade       = #{grade}
+        , clazz       = #{clazz}
+        , update_time = sysdate()
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM student
+        WHERE id = #{id}
+    </delete>
+</mapper>

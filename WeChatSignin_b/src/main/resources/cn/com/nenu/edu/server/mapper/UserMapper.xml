@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.UserMapper">
+
+    <resultMap id="user" type="User">
+        <id property="id" column="user_id"/>
+        <result property="openId" column="user_open_id"/>
+        <result property="role" column="user_role"/>
+        <result property="name" column="user_name"/>
+        <result property="school" column="user_school"/>
+        <result property="campusId" column="user_campus_id"/>
+        <result property="department" column="user_department"/>
+        <result property="phoneNum" column="user_phone_num"/>
+        <result property="email" column="user_email"/>
+        <result property="createTime" column="user_create_time"/>
+        <result property="updateTime" column="user_update_time"/>
+        <association property="teacher" resultMap="com.nenu.edu.server.mapper.TeacherMapper.teacher"/>
+        <association property="student" resultMap="com.nenu.edu.server.mapper.StudentMapper.student"/>
+    </resultMap>
+
+    <select id="getById" resultMap="user">
+        SELECT
+        user.id             AS user_id,
+        user.open_id        AS user_open_id,
+        user.role           AS user_role,
+        user.name           AS user_name,
+        user.school         AS user_school,
+        user.campus_id      AS user_campus_id,
+        user.department     AS user_department,
+        user.phone_num      AS user_phone_num,
+        user.email          AS user_email,
+        user.create_time    AS user_create_time,
+        user.update_time    AS user_update_time,
+
+        teacher.id          AS teacher_id,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time,
+
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM user
+        LEFT JOIN teacher ON user.teacher_id = teacher.id
+        LEFT JOIN student ON user.student_id = student.id
+        WHERE user.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user(
+        open_id
+        ,role
+        ,name
+        ,school
+        ,campus_id
+        ,department
+        ,phone_num
+        ,email
+        ,teacher_id
+        ,student_id
+        ,create_time
+        )VALUES(
+        #{openId}
+        , #{role}
+        , #{name}
+        , #{school}
+        , #{campusId}
+        , #{department}
+        , #{phoneNum}
+        , #{email}
+        <choose>
+            <when test="teacher != null">
+                , #{teacher.id}
+            </when>
+            <otherwise>
+                , null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="student != null">
+                , #{student.id}
+            </when>
+            <otherwise>
+                , null
+            </otherwise>
+        </choose>
+        , sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getByOpenId" resultMap="user">
+        SELECT
+        user.id             AS user_id,
+        user.open_id        AS user_open_id,
+        user.role           AS user_role,
+        user.name           AS user_name,
+        user.school         AS user_school,
+        user.campus_id      AS user_campus_id,
+        user.department     AS user_department,
+        user.phone_num      AS user_phone_num,
+        user.email          AS user_email,
+        user.create_time    AS user_create_time,
+        user.update_time    AS user_update_time,
+
+        teacher.id          AS teacher_id,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time,
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM user
+        LEFT JOIN teacher ON user.teacher_id = teacher.id
+        LEFT JOIN student ON user.student_id = student.id
+        WHERE user.open_id = #{openId}
+    </select>
+
+    <update id="update" parameterType="User">
+        UPDATE user
+        SET
+        role = #{role}
+        , name = #{name}
+        , school = #{school}
+        , campus_id = #{campusId}
+        <if test="teacher != null">
+            ,teacher_id = #{teacher.id}
+        </if>
+        <if test="student != null">
+            ,student_id = #{student.id}
+        </if>
+        ,update_time = sysdate()
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMore" parameterType="User">
+        UPDATE user
+        SET
+        department    = #{department}
+        , phone_num   = #{phoneNum}
+        , email       = #{email}
+        , update_time = sysdate()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getByTeacherId" resultMap="user">
+        SELECT
+        user.id             AS user_id,
+        user.name           AS user_name,
+        user.school         AS user_school,
+        user.campus_id      AS user_campus_id,
+        user.department     AS user_department,
+        user.phone_num      AS user_phone_num,
+        user.email          AS user_email,
+        user.create_time    AS user_create_time,
+        user.update_time    AS user_update_time,
+
+        teacher.id          AS teacher_id,
+        teacher.create_time AS teacher_create_time,
+        teacher.update_time AS teacher_update_time
+        FROM user
+        LEFT JOIN teacher ON user.teacher_id = teacher.id
+        WHERE user.teacher_id = #{teacherId}
+    </select>
+
+    <select id="getByStudentId" resultMap="user">
+        SELECT
+        user.id             AS user_id,
+        user.name           AS user_name,
+        user.school         AS user_school,
+        user.campus_id      AS user_campus_id,
+        user.department     AS user_department,
+        user.phone_num      AS user_phone_num,
+        user.email          AS user_email,
+        user.create_time    AS user_create_time,
+        user.update_time    AS user_update_time,
+
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM user
+        LEFT JOIN student ON user.student_id = student.id
+        WHERE user.student_id = #{studentId}
+    </select>
+</mapper>

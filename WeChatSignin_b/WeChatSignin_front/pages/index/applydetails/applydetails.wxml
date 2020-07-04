@@ -1,0 +1,53 @@
+<!--pages/index/applydetails/applydetails.wxml-->
+<!--pages/index/course/course.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-course">
+      <view class="course-name">
+        <text class="course-name-text">{{application.course.name}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">课程代码</text>
+        <text class="item-value">{{application.course.code}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">授课老师</text>
+        <text class="item-value">{{application.course.teacher.name}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">上课地点</text>
+        <text class="item-value">{{application.course.place}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">上课时间</text>
+        <text class="item-value">{{application.course.time}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">申请状态</text>
+        <text wx:if="{{application.status == 'WAITING'}}" class="item-value">待审核</text>
+        <text wx:if="{{application.status == 'PASSED'}}" class="item-value">审核通过</text>
+        <text wx:if="{{application.status == 'NOT_PASSED'}}" class="item-value">审核未通过</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">申请人</text>
+        <text class="item-value">{{application.student.name}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">申请时间</text>
+        <text class="item-value">{{application.create_time}}</text>
+      </view>
+      <view wx:if="{{application.update_time}}" class="course-item">
+        <text class="item-name">审核时间</text>
+        <text class="item-value">{{application.update_time}}</text>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{user.ck.role =='TEACHER' && application.status == 'WAITING'}}">
+    <view class="update-btn" bindtap="handleApply" data-status="PASSED">
+      <text>通过</text>
+    </view>
+    <view class="delete-btn" bindtap="handleApply" data-status="NOT_PASSED">
+      <text>拒绝</text>
+    </view>
+  </block>
+</view>

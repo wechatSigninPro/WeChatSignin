@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.FeedbackMapper">
+
+    <resultMap id="feedback" type="Feedback">
+        <id property="id" column="feedback_id"/>
+        <result property="createTime" column="feedback_create_time"/>
+        <result property="updateTime" column="feedback_update_time"/>
+        <result property="content" column="feedback_content"/>
+        <association property="user" resultMap="com.nenu.edu.server.mapper.UserMapper.user"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Feedback" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO feedback (
+        user_id
+        , content
+        , create_time
+        ) VALUES (
+        #{user.id}
+        , #{content}
+        , sysdate()
+        )
+    </insert>
+
+</mapper>

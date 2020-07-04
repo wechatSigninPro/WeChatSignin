@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.edu.server.mapper.SignMapper">
+
+    <resultMap id="sign" type="Sign">
+        <id property="id" column="sign_id"/>
+        <result property="createTime" column="sign_create_time"/>
+        <result property="updateTime" column="sign_update_time"/>
+        <association property="call" resultMap="com.nenu.edu.server.mapper.CallMapper.call"/>
+        <association property="student" resultMap="com.nenu.edu.server.mapper.StudentMapper.student"/>
+    </resultMap>
+
+    <select id="getById" resultMap="sign">
+        SELECT
+        sign.id             AS sign_id,
+        sign.create_time    AS sign_create_time,
+        sign.update_time    AS sign_update_time,
+
+        `call`.id           AS call_id,
+        `call`.password     AS call_password,
+        `call`.latitude     AS call_latitude,
+        `call`.longitude    AS call_longitude,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM sign
+        LEFT JOIN `call` ON sign.call_id = `call`.id
+        LEFT JOIN student ON sign.student_id = student.id
+        WHERE sign.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Sign" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sign (
+        call_id
+        , student_id
+        , create_time
+        ) VALUES (
+        #{call.id}
+        , #{student.id}
+        , sysdate()
+        )
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM sign
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getByCallIdAndStudentId" resultMap="sign">
+        SELECT
+        sign.id             AS sign_id,
+        sign.create_time    AS sign_create_time,
+        sign.update_time    AS sign_update_time,
+
+        `call`.id           AS call_id,
+        `call`.password     AS call_password,
+        `call`.latitude     AS call_latitude,
+        `call`.longitude    AS call_longitude,
+        `call`.create_time  AS call_create_time,
+        `call`.update_time  AS call_update_time,
+
+        student.id          AS student_id,
+        student.major       AS student_major,
+        student.grade       AS student_grade,
+        student.clazz       AS student_clazz,
+        student.create_time AS student_create_time,
+        student.update_time AS student_update_time
+        FROM sign
+        LEFT JOIN `call` ON sign.call_id = `call`.id
+        LEFT JOIN student ON sign.student_id = student.id
+        WHERE sign.call_id = #{callId}
+        AND sign.student_id = #{studentId}
+    </select>
+
+</mapper>

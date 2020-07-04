@@ -1,0 +1,42 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="operations-bar">
+    <view class="operations">
+      <navigator class="oper-item" url="/pages/index/search/search" hover-class="navigator-hover">
+        <image class="oper-icon" src="/images/icon/search.png"></image>
+        <text class="oper-text">搜索课程</text>
+      </navigator>
+      <navigator class="oper-item" url="/pages/index/add/add" hover-class="navigator-hover">
+        <image class="oper-icon" src="/images/icon/add.png"></image>
+        <text class="oper-text">添加课程</text>
+      </navigator>
+      <navigator class="oper-item" url="/pages/index/apply/apply" hover-class="navigator-hover">
+        <image class="oper-icon" src="/images/icon/apply.png"></image>
+        <text class="oper-text">申请课程</text>
+      </navigator>
+    </view>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{!user.ck.role}}" class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+    <view wx:elif="{{courses.length > 0}}" class="courses">
+      <block wx:for="{{courses}}" wx:key="id">
+        <navigator class="courses-item" url="/pages/index/details/details?id={{item.id}}" hover-class="navigator-hover">
+          <view class="courses-major">
+            <text class="courses-name">{{item.name}}</text>
+            <text class="courses-odd">{{user.ck.role == 'TEACHER'? item.code: '授课老师：'+item.teacher.name}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="course-room">{{item.place}}</text>
+            <text class="course-time">{{item.time}}</text>
+          </view>
+        </navigator>
+      </block>
+    </view>
+    <view wx:else class="notice">
+      <text class="notice-text">暂无课程，快去添加吧</text>
+    </view>
+  </view>
+</view>

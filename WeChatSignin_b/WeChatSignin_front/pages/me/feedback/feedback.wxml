@@ -1,0 +1,18 @@
+<!--pages/me/feedback/feedback.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-above">
+      <view class="form-input">
+        <view class="input-item">
+          <textarea class="input-val" placeholder="请输入反馈内容" maxlength="125" bindinput="inputContent" value="{{content}}" />
+        </view>
+      </view>
+    </view>
+    <view class="content-body">
+      <text>如果您对小程序有任何建议或意见，希望能及时反馈，我们会妥善考虑并加以改进，谢谢！</text>
+    </view>
+    <view class="content-below" bindtap="submit">
+      <text>提交反馈</text>
+    </view>
+  </view>
+</view>

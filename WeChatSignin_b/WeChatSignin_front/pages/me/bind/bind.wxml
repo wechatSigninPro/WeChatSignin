@@ -1,0 +1,6 @@
+<!--pages/me/bind/bind.wxml-->
+<view class="container">
+  <view class="notice">
+    <text class="notice-text">暂不支持绑定😝</text>
+  </view>
+</view>

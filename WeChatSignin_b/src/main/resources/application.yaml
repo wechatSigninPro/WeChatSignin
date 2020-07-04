@@ -1,0 +1,31 @@
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/server?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: localhost
+    schema: classpath:schema.sql
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
+logging:
+  level:
+    cn.xiaofeig.checking.server.mapper.*: DEBUG
+  file: log/server-server.log
+
+wx:
+  app-id: wx82ead7603432bd70
+  app-secret: 94a2f8c6313dea823c295c14dd36102d
+  login-url: https://api.weixin.qq.com/sns/jscode2session?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code
+
+jwt:
+  header: Authorization
+  secret: moce_io_jwt_secret
+  expired: 604800
+  tokenHead: "Bearer "

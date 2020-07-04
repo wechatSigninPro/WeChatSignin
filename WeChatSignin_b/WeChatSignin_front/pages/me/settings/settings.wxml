@@ -1,0 +1,30 @@
+<!--pages/me/settings/settings.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-above">
+      <view class="form-input">
+        <view class="input-item">
+          <text class="input-label">身份</text>
+          <picker bindchange="bindPickerChange" range="{{role}}" range-key="description" value="{{index}}">
+            <text class="input-val">{{role[index].description}}</text>
+          </picker>
+        </view>
+        <view class="input-item">
+          <text class="input-label">姓名</text>
+          <input class="input-val" placeholder="请输入姓名" maxlength="30" bindinput="inputName" value="{{name}}"/>
+        </view>
+        <view class="input-item">
+          <text class="input-label">学校</text>
+          <input class="input-val" placeholder="请输入学校" maxlength="20" bindinput="inputSchool" value="{{school}}"/>
+        </view>
+        <view class="input-item">
+          <text class="input-label">{{role[index].campus_id_desc}}</text>
+          <input class="input-val" placeholder="请输入{{role[index].campus_id_desc}}" maxlength="20"  bindinput="inputCampusId" value="{{campus_id}}"/>
+        </view>
+      </view>
+    </view>
+    <view class="content-below" bindtap="submit">
+      <text>保存</text>
+    </view>
+  </view>
+</view>
