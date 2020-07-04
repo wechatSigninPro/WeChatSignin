@@ -1,0 +1,36 @@
+<!--pages/index/search/search.wxml-->
+<view class="container">
+  <block wx:if="{{!user.ck.role}}">
+    <view class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="search-bar">
+      <view class="search-form">
+        <view class="search-input">
+          <input class="search-val" placeholder="{{user.ck.role == 'TEACHER'? '请输入课程代码/课程名称':'请输入课程代码/课程名称/授课老师'}}" maxlength="40" bindinput="inputKeyword"></input>
+        </view>
+        <view class="search-btn" bindtap="submit">
+          <text class="search-text">搜索</text>
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="courses" wx:if="{{courses.length > 0}}">
+        <block wx:for="{{courses}}" wx:key="id">
+          <navigator class="courses-item" url="/pages/index/details/details?id={{item.id}}" hover-class="navigator-hover">
+            <view class="courses-major">
+              <text class="courses-name">{{item.name}}</text>
+              <text class="courses-odd">{{user.ck.role == 'TEACHER'? item.code: '授课老师：'+item.teacher.name}}</text>
+            </view>
+            <view class="courses-minor">
+              <text class="course-room">{{item.place}}</text>
+              <text class="course-time">{{item.time}}</text>
+            </view>
+          </navigator>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

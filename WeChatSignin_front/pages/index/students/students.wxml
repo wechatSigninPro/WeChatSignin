@@ -1,0 +1,35 @@
+<!--pages/index/students/students.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="course">
+      <view class="courses-major">
+        <text class="courses-name">{{name}}</text>
+        <text class="courses-odd">{{students.length}}人</text>
+      </view>
+      <view class="courses-minor">
+        <text class="course-minor-left">{{code}}</text>
+        <text class="course-minor-right">{{teacher_name}}</text>
+      </view>
+      <view class="courses-minor">
+        <text class="course-minor-left">{{place}}</text>
+        <text class="course-minor-right">{{time}}</text>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{students.length >0}}">
+    <view class="students">
+      <block wx:for="{{students}}" wx:key="id">
+        <view class="student">
+          <text class="student-index">{{index+1}}</text>
+          <text class="student-name">{{item.name}}</text>
+          <text class="student-id">{{item.campus_id}}</text>
+        </view>
+      </block>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="notice">
+      <text class="notice-text">暂无学生</text>
+    </view>
+  </block>
+</view>

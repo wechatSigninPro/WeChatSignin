@@ -1,0 +1,60 @@
+<!--pages/index/course/course.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-course">
+      <view class="course-name">
+        <text class="course-name-text">{{course.name}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">课程代码</text>
+        <text class="item-value">{{course.code}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">授课老师</text>
+        <text class="item-value">{{course.teacher.name}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">上课地点</text>
+        <text class="item-value">{{course.place}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">上课时间</text>
+        <text class="item-value">{{course.time}}</text>
+      </view>
+      <view class="course-item">
+        <text class="item-name">学生名单</text>
+        <navigator class="item-value" url="/pages/index/students/students?id={{course.id}}&name={{course.name}}&code={{course.code}}&teacher_name={{course.teacher.name}}&place={{course.place}}&time={{course.time}}" hover-class="navigator-hover">
+          <text>点击查看</text>
+        </navigator>
+      </view>
+      <view class="course-item">
+        <text class="item-name">签到记录</text>
+        <navigator class="item-value" url="/pages/sign/record/record?id={{course.id}}&name={{course.name}}&code={{course.code}}&teacher_name={{course.teacher.name}}&place={{course.place}}&time={{course.time}}" hover-class="navigator-hover">
+          <text>点击查看</text>
+        </navigator>
+      </view>
+      <view class="course-item">
+        <text class="item-name">课程群聊</text>
+        <navigator class="item-value" url="/pages/index/chat/chat?course_id={{course.id}}" hover-class="navigator-hover">
+          <text>点击查看</text>
+        </navigator>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{user.ck.role =='TEACHER'}}">
+    <navigator class="update-btn" url="/pages/index/update/update?id={{course.id}}&name={{course.name}}&code={{course.code}}&time={{course.time}}&place={{course.place}}">
+      <text>修改</text>
+    </navigator>
+    <view class="delete-btn" bindtap="deleteCourse">
+      <text>删除</text>
+    </view>
+  </block>
+  <block wx:elif="{{user.ck.role =='STUDENT'}}">
+    <view wx:if="{{student_course_id}}" class="remove-btn" bindtap="quitCourse">
+      <text>退出课程</text>
+    </view>
+    <view wx:else class="apply-btn" bindtap="applyCourse">
+      <text>申请课程</text>
+    </view>
+    </block>
+</view>

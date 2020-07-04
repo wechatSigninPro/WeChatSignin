@@ -1,0 +1,58 @@
+<!--pages/sign/call/call.wxml-->
+<view class="container">
+  <block wx:if="{{!user.ck.role}}">
+    <view class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="content">
+      <view class="content-form">
+        <block wx:if="{{user.ck.role == 'TEACHER'}}">
+          <view class="input-item">
+            <text class="input-label">课程</text>
+            <picker wx:if="{{courses.length>0}}" class="input-val" bindchange="bindPickerChange" range="{{courses}}" range-key="name" value="{{index}}">
+              <text>{{courses[index].name}}</text>
+            </picker>
+            <text wx:else class="input-val-none">请添加课程后点名</text>
+          </view>
+        </block>
+        <view class="input-item">
+          <text class="input-label">口令</text>
+          <input wx:if="{{user.ck.role == 'TEACHER'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" value="{{password}}" type="number"></input>
+          <input wx:if="{{user.ck.role == 'STUDENT'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" type="number" bindinput="getCalls"></input>
+        </view>
+      </view>
+
+      <view class="courses" wx:if="{{user.ck.role == 'STUDENT' && calls.length > 0}}">
+      <block wx:for="{{calls}}" wx:key="id" wx:for-index="idx">
+        <view hover-class="navigator-hover" class="{{num == idx? 'courses-item-selected': 'courses-item'}}" bindtap="selected" data-num="{{idx}}">
+          <view class="courses-major">
+            <text class="courses-name">{{item.course.name}}</text>
+            <text class="courses-odd">{{item.course.teacher.name}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="course-room">{{item.course.code}}</text>
+            <text class="course-time">口令：{{item.password}}</text>
+          </view>
+          <view class="courses-minor">
+            <text class="course-room">点名时间</text>
+            <text class="course-time">{{item.create_time}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    </view>
+
+    <block wx:if="{{user.ck.role == 'TEACHER'}}">
+      <view class="confirm-btn" bindtap="createCall">
+        <text>点名</text>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="confirm-btn" bindtap="createSign">
+        <text>签到</text>
+      </view>
+    </block>
+  </block>
+</view>

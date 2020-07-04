@@ -1,0 +1,52 @@
+<!--pages/sign/search/search.wxml-->
+<view class="container">
+  <block wx:if="{{!user.ck.role}}">
+    <view class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="search-bar">
+      <view class="search-form">
+        <view class="search-input">
+          <input class="search-val" placeholder="{{user.ck.role == 'TEACHER'? '请输入课程代码/课程名称':'请输入课程代码/课程名称/授课老师'}}" maxlength="40" bindinput="inputKeyword"></input>
+        </view>
+        <view class="search-btn" bindtap="submit">
+          <text class="search-text">搜索</text>
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="courses" wx:if="{{calls.length > 0}}">
+        <block wx:if="{{user.ck.role == 'TEACHER'}}">
+          <block wx:for="{{calls}}" wx:key="id">
+            <navigator class="courses-item" url="/pages/sign/details/details?id={{item.id}}" hover-class="navigator-hover">
+              <view class="courses-major">
+                <text class="courses-name">{{item.call.course.name}}</text>
+                <text class="courses-odd">签到人数：{{item.sign_sum}}</text>
+              </view>
+              <view class="courses-minor">
+                <text class="course-room">{{item.call.create_time}}</text>
+                <text class="course-time">口令：{{item.call.password}}</text>
+              </view>
+            </navigator>
+          </block>
+        </block>
+        <block wx:elif="{{user.ck.role == 'STUDENT'}}">
+          <block wx:for="{{calls}}" wx:key="id">
+            <navigator class="courses-item" url="/pages/sign/details/details?id={{item.id}}" hover-class="navigator-hover">
+              <view class="courses-major">
+                <text class="courses-name">{{item.sign.call.course.name}}</text>
+                <text class="courses-odd">{{item.sign.call.course.teacher.name}}</text>
+              </view>
+              <view class="courses-minor">
+                <text class="course-room">{{item.sign.call.create_time}}</text>
+                <text class="course-time">{{item.sign.id? '已签到':'未签到'}}</text>
+              </view>
+            </navigator>
+          </block>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

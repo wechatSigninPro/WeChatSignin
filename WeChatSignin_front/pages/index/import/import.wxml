@@ -1,0 +1,7 @@
+<!--pages/index/import/import.wxml-->
+<view class="container">
+  <view class="notice">
+    <text class="notice-text">暂不支持导入😝</text>
+  </view>
+</view>
+

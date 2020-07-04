@@ -1,0 +1,36 @@
+<!--pages/index/apply/apply.wxml-->
+<view class="container">
+  <view class="content">
+    <view wx:if="{{!user.ck.role}}" class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+    <view wx:elif="{{applications.length > 0}}" class="courses">
+       <block wx:for="{{applications}}" wx:key="id"> 
+      <navigator class="courses-item" url="/pages/index/applydetails/applydetails?id={{item.id}}" hover-class="navigator-hover">
+        <view class="courses-major">
+          <text class="courses-name">{{item.course.name}}</text>
+          <text wx:if="{{item.status == 'WAITING'}}" class="courses-odd">待审核</text>
+          <text wx:if="{{item.status == 'PASSED'}}" class="courses-odd">审核通过</text>
+          <text wx:if="{{item.status == 'NOT_PASSED'}}" class="courses-odd">审核未通过</text>
+        </view>
+        <view class="courses-minor">
+          <text class="course-room">{{item.course.code}}</text>
+          <text wx:if="{{user.ck.role == 'STUDENT'}}" class="course-time">授课老师：{{item.course.teacher.name}}</text>
+                    <text wx:if="{{user.ck.role == 'TEACHER'}}" class="course-time">申请人：{{item.student.name}}</text>
+        </view>
+        <view class="courses-minor">
+          <text class="course-room">申请时间</text>
+          <text class="course-time">{{item.create_time}}</text>
+        </view>
+        <view wx:if="{{item.update_time}}" class="courses-minor">
+          <text class="course-room">审核时间</text>
+          <text class="course-time">{{item.update_time}}</text>
+        </view>
+      </navigator>
+       </block> 
+    </view>
+     <view wx:else class="notice">
+      <text class="notice-text">暂无课程申请</text>
+    </view> 
+  </view>
+</view>

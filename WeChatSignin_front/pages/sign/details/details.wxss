@@ -1,0 +1,89 @@
+/* pages/sign/details/details.wxss */
+
+.container {
+  background-color: #f6f6f6;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 110rpx;
+}
+
+.content-course {
+  display: flex;
+  flex-direction: column;
+  margin: 0rpx 30rpx;
+  background-color: #fff;
+  border-radius: 5rpx;
+  padding: 20rpx 20rpx;
+  border: 1px solid #e5e5e5;
+}
+
+.course-hd {
+  padding-bottom: 10rpx;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.courses-major {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 0 10rpx;
+}
+
+.courses-name {
+  font-size: 38rpx;
+  font-weight: 400;
+}
+
+.courses-odd {
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #7e7e7e;
+}
+
+.courses-minor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 32rpx;
+  color: #7e7e7e;
+}
+
+.course-bd {
+  margin-top: 10rpx;
+}
+
+.course-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 5rpx 0;
+  color: #7e7e7e;
+}
+
+.item-name {
+  font-size: 32rpx;
+}
+
+.item-value {
+  font-size: 28rpx;
+}
+
+.delete-btn {
+  font-size: 13pt;
+  line-height: 85rpx;
+  height: 85rpx;
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  margin: 30rpx 80rpx 50rpx;
+  background: #e55c5c;
+}
+
+.delete-btn:active {
+  opacity: 0.8;
+}

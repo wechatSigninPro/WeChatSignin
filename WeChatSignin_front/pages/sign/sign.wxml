@@ -1,0 +1,72 @@
+<!--pages/sign/sign.wxml-->
+<view class="container">
+  <view class="operations-bar">
+    <view class="operations">
+      <navigator class="oper-item" url="/pages/sign/search/search" hover-class="navigator-hover">
+        <image class="oper-icon" src="/images/icon/search.png"></image>
+        <text class="oper-text">搜索</text>
+      </navigator>
+      <block wx:if="{{user.ck.role == 'TEACHER'}}">
+        <navigator class="oper-item" url="/pages/sign/call/call" hover-class="navigator-hover">
+          <image class="oper-icon" src="/images/icon/check.png"></image>
+          <text class="oper-text">点名</text>
+        </navigator>
+        <view class="oper-item" url="/pages/sign/export/export" hover-class="navigator-hover" bindtap="exportToExcel">
+          <image class="oper-icon" src="/images/icon/export.png"></image>
+          <text class="oper-text">导出</text>
+        </view>
+      </block>
+      <block wx:else>
+        <navigator class="oper-item" url="/pages/sign/call/call" hover-class="navigator-hover">
+          <image class="oper-icon" src="/images/icon/check.png"></image>
+          <text class="oper-text">签到</text>
+        </navigator>
+        <view class="oper-item" hover-class="navigator-hover" bindtap="scanCode">
+          <image class="oper-icon" src="/images/icon/scan.png"></image>
+          <text class="oper-text">扫一扫</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{!user.ck.role}}" class="notice">
+      <text class="notice-text">请在设置中选择你的身份</text>
+    </view>
+    <view wx:elif="{{calls.length > 0}}" class="courses">
+      <block wx:if="{{user.ck.role == 'TEACHER'}}">
+        <block wx:for="{{calls}}" wx:key="id">
+          <navigator class="courses-item" url="/pages/sign/details/details?id={{item.id}}" hover-class="navigator-hover">
+            <view class="courses-major">
+              <text class="courses-name">{{item.call.course.name}}</text>
+              <text class="courses-odd">签到人数：{{item.sign_sum}}</text>
+            </view>
+            <view class="courses-minor">
+              <text class="course-room">{{item.call.create_time}}</text>
+              <text class="course-time">口令：{{item.call.password}}</text>
+            </view>
+          </navigator>
+        </block>
+      </block>
+      <block wx:elif="{{user.ck.role == 'STUDENT'}}">
+        <block wx:for="{{calls}}" wx:key="id">
+          <navigator class="courses-item" url="/pages/sign/details/details?id={{item.id}}" hover-class="navigator-hover">
+            <view class="courses-major">
+              <text class="courses-name">{{item.sign.call.course.name}}</text>
+              <!--
+              <text class="courses-odd">授课老师：{{item.sign.call.course.teacher.name}}</text>
+               -->
+            </view>
+            <view class="courses-minor">
+              <text class="course-room">{{item.sign.call.create_time}}</text>
+              <text class="course-time">{{item.sign.id? '已签到':'未签到'}}</text>
+            </view>
+          </navigator>
+        </block>
+      </block>
+    </view>
+    <view wx:else class="notice">
+      <text class="notice-text">暂无签到记录</text>
+    </view>
+  </view>
+</view>

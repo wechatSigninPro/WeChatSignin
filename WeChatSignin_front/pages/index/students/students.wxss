@@ -1,0 +1,87 @@
+/* pages/index/students/students.wxss */
+.container {
+  background-color: #f6f6f6;
+  padding-bottom: 30rpx; 
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 100%;
+  height: 300rpx;
+  background-color: #f6f6f6;
+}
+.course {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin:110rpx 30rpx 0;  
+  padding: 20rpx 20rpx 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 5rpx;
+  background-color: #fff;
+}
+.courses-major {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 5rpx 0;
+}
+.courses-name {
+  font-size: 38rpx;
+}
+.courses-odd {
+  font-size: 28rpx;
+  color: #7e7e7e;
+}
+.courses-minor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #7e7e7e;
+}
+
+.students {
+  margin: 300rpx 30rpx 0;
+  padding: 0 10rpx 40rpx; 
+  border: 1px solid #e5e5e5;
+  border-top: none;
+  border-radius: 5rpx;
+  background-color: #fff;
+}
+.student {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding: 20rpx 10rpx;
+  font-size: 32rpx;
+  border-bottom: 1px solid #e5e5e5; 
+  color: #7e7e7e;
+}
+.student-index {
+  color: #7e7e7e;
+  width: 20%;
+}
+.student-name {
+  flex: 1;
+}
+
+.notice {
+  margin: 300rpx 30rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 20rpx 0 20rpx; 
+  border: 1px solid #e5e5e5;
+  border-top: none;
+  border-radius: 5rpx;
+  background-color: #fff;
+}
+.notice-text {
+  font-size: 32rpx;
+  color: #7e7e7e;
+}

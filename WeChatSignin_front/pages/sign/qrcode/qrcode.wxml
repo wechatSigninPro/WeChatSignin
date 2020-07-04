@@ -1,0 +1,29 @@
+<!--pages/sign/qrcode/qrcode.wxml-->
+<!--pages/sign/details/details.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="content-course">
+      <view class="course-hd">
+        <view class="courses-major">
+          <text class="courses-name">{{name}}</text>
+          <text class="courses-odd">{{code}}</text>
+        </view>
+        <view class="courses-minor">
+          <text class="courses-minor-left">{{place}}</text>
+          <text class="courses-minor-right">{{time}}</text>
+        </view>
+        <view class="courses-minor">
+          <text class="courses-minor-left">点名时间</text>
+          <text class="courses-minor-right">{{create_time}}</text>
+        </view>
+      </view>
+      <view class="course-bd">
+        <block wx:if="{{qr_code}}">
+          <image class="qrcode" src="{{'data:image/jpg;base64,'+qr_code}}"></image>
+          <text class="qrcode-text">扫一扫，完成签到</text>
+        </block>
+        <text wx:else class="notice">获取签到二维码失败</text>
+      </view>
+    </view>
+  </view>
+</view>

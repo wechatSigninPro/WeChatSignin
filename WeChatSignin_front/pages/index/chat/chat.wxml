@@ -1,0 +1,6 @@
+<!--pages/index/chat/chat.wxml-->
+<view class="container">
+  <view class="notice">
+    <text class="notice-text">暂不支持课程群聊😝</text>
+  </view>
+</view>
