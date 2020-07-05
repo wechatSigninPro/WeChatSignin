@@ -7,8 +7,8 @@
 		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
-		"autoAudits": false,
 		"coverView": true,
+		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
 		"checkInvalidKey": true,
@@ -19,12 +19,13 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"useCompilerModule": true
+		"useCompilerModule": false,
+		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.93",
 	"appid": "wxeebf92711dd0a010",
-	"projectname": "checking",
+	"projectname": "WeChatSignin_front",
 	"isGameTourist": false,
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
