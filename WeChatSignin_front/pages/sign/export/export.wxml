@@ -13,7 +13,7 @@
           <input class="input-val" placeholder="请选择课程"></input>
         </view>
         <view class="input-item">
-          <text class="input-label">格式</text>
+          <text class="input-label">格式</text>
           <input class="input-val" placeholder="PDF / Excel"></input>
         </view>
       </form>

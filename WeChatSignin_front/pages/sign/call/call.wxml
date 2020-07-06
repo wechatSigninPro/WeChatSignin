@@ -19,8 +19,8 @@
         </block>
         <view class="input-item">
           <text class="input-label">口令</text>
-          <input wx:if="{{user.ck.role == 'TEACHER'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" value="{{password}}" type="number"></input>
-          <input wx:if="{{user.ck.role == 'STUDENT'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" type="number" bindinput="getCalls"></input>
+          <input wx:if="{{user.ck.role == 'TEACHER'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" value="{{password}}" type="number"></input>
+          <input wx:if="{{user.ck.role == 'STUDENT'}}" class="input-val" placeholder="请输入四位口令" maxlength="4" bindinput="inputPassword" type="number" bindinput="getCalls"></input>
         </view>
       </view>
 

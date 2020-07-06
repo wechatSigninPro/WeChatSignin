@@ -90,6 +90,7 @@ Page({
       },
       token: app.token,
       success: res => {
+        console.log(res);
         this.setData({
           qr_code: res.data.data
         })
