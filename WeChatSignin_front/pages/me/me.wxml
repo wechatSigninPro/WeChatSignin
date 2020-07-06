@@ -27,11 +27,11 @@
         <text class="info-item-right">{{user.ck.department}}</text>
       </view>
       <view wx:if="{{user.ck.phone_num}}" class="user-info-item">
-        <text class="info-item-left">手机号</text>
+        <text class="info-item-left">手机号</text>
         <text class="info-item-right">{{user.ck.phone_num}}</text>
       </view>
       <view wx:if="{{user.ck.email}}" class="user-info-item">
-        <text class="info-item-left">邮箱</text>
+        <text class="info-item-left">邮箱</text>
         <text class="info-item-right">{{user.ck.email}}</text>
       </view>
       <block wx:if="{{user.ck.role == 'STUDENT'}}">
@@ -40,11 +40,11 @@
           <text class="info-item-right">{{user.ck.student.major}}</text>
         </view>
         <view wx:if="{{user.ck.student.grade}}" class="user-info-item">
-          <text class="info-item-left">年级</text>
+          <text class="info-item-left">年级</text>
           <text class="info-item-right">{{user.ck.student.grade}}</text>
         </view>
         <view wx:if="{{user.ck.student.clazz}}" class="user-info-item">
-          <text class="info-item-left">班级</text>
+          <text class="info-item-left">班级</text>
           <text class="info-item-right">{{user.ck.student.clazz}}</text>
         </view>
       </block>

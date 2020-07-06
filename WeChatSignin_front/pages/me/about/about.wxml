@@ -2,11 +2,11 @@
 <view class="container">
   <view class="body">
     <view class="notice">
-      <text class="notice-text">这是一个签到小程序🤓</text>
+      <text class="notice-text">这是一个签到小程序</text>
     </view>
   </view>
   <view class="footer">
-    <text>重庆邮电大学 · 高小飞 · 2264904543@qq.com</text>
+    <text></text>
     <text>Copyright @ 2018 All Rights Reserved</text>
   </view>
 </view>

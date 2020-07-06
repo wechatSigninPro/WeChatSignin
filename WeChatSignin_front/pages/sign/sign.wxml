@@ -23,7 +23,7 @@
         </navigator>
         <view class="oper-item" hover-class="navigator-hover" bindtap="scanCode">
           <image class="oper-icon" src="/images/icon/scan.png"></image>
-          <text class="oper-text">扫一扫</text>
+          <text class="oper-text">扫一扫</text>
         </view>
       </block>
     </view>
